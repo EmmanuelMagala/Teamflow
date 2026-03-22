@@ -1,0 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 45% 96%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 28% 92%;
+    --secondary-foreground: 222 47% 11%;
+    --accent: 199 89% 48%;
+    --accent-foreground: 210 40% 98%;
+    --muted: 210 28% 93%;
+    --muted-foreground: 215 18% 39%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214 26% 84%;
+    --input: 214 26% 84%;
+    --ring: 221 83% 53%;
+    --radius: 1rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    background-image:
+      radial-gradient(
+        circle at top left,
+        rgba(14, 165, 233, 0.22),
+        transparent 28%
+      ),
+      radial-gradient(
+        circle at top right,
+        rgba(37, 99, 235, 0.12),
+        transparent 24%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.88),
+        rgba(226, 232, 240, 0.94)
+      );
+    min-height: 100vh;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+}

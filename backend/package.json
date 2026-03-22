@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "dev": "tsx watch src/server.ts",
+    "migrate": "tsx src/scripts/migrate.ts",
     "build": "tsc",
     "start": "node dist/server.js"
   },
@@ -28,9 +30,12 @@
     "@types/express": "^5.0.6",
     "@types/node": "^25.5.0",
     "@types/pg": "^8.20.0",
+    "@types/supertest": "^6.0.3",
     "nodemon": "^3.1.14",
+    "supertest": "^7.1.4",
     "ts-node": "^10.9.2",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
   }
 }

@@ -3,6 +3,7 @@ import { getCurrentAppUser } from "../users/currentUser.js";
 import {
   createProjectForOwner,
   deleteProjectByIdAndOwnerId,
+  getProjectByIdAndOwnerId,
   getProjectsByWorkspaceIdAndOwnerId,
   updateProjectByIdAndOwnerId,
 } from "./projectQueries.js";
@@ -34,6 +35,37 @@ export const getProjects = async (
   }
 };
 
+export const getProjectByIdHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const user = await getCurrentAppUser(req);
+
+    if (!user) {
+      res
+        .status(404)
+        .json({ error: "User not found. Call POST /api/users/sync first." });
+      return;
+    }
+
+    const project = await getProjectByIdAndOwnerId(
+      Number(req.params.id),
+      user.id,
+    );
+
+    if (!project) {
+      res.status(404).json({ error: "Project not found" });
+      return;
+    }
+
+    res.status(200).json(project);
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const createProjectHandler = async (
   req: Request,
   res: Response,
@@ -55,12 +87,19 @@ export const createProjectHandler = async (
       user.id,
     );
 
-    if (!project) {
+    if (project.kind === "workspace_not_found") {
       res.status(404).json({ error: "Workspace not found" });
       return;
     }
 
-    res.status(201).json(project);
+    if (project.kind === "duplicate_name") {
+      res.status(409).json({
+        error: "This workspace already has a project with a similar name",
+      });
+      return;
+    }
+
+    res.status(201).json(project.project);
   } catch (err) {
     next(err);
   }
@@ -92,7 +131,14 @@ export const updateProjectHandler = async (
       return;
     }
 
-    res.status(200).json(project);
+    if (project.kind === "duplicate_name") {
+      res.status(409).json({
+        error: "This workspace already has a project with a similar name",
+      });
+      return;
+    }
+
+    res.status(200).json(project.project);
   } catch (err) {
     next(err);
   }

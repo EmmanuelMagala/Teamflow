@@ -5,6 +5,7 @@ import { validate } from "../../middleware/validate.js";
 import {
   createProjectHandler,
   deleteProjectHandler,
+  getProjectByIdHandler,
   getProjects,
   updateProjectHandler,
 } from "./projectController.js";
@@ -17,6 +18,13 @@ router.get(
   query("workspaceId").isInt({ min: 1 }),
   validate,
   getProjects,
+);
+router.get(
+  "/:id",
+  requireAuth,
+  param("id").isInt({ min: 1 }),
+  validate,
+  getProjectByIdHandler,
 );
 router.post(
   "/",

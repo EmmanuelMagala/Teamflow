@@ -14,6 +14,16 @@ export interface Workspace {
   created_at: Date;
 }
 
+export type WorkspaceMemberRole = "owner" | "member";
+
+export interface WorkspaceMember {
+  workspace_id: number;
+  user_id: number;
+  role: WorkspaceMemberRole;
+  created_at: Date;
+  email: string;
+}
+
 export interface Project {
   id: number;
   name: string;
@@ -28,6 +38,7 @@ export interface Task {
   title: string;
   description: string | null;
   status: TaskStatus;
+  sort_order: number;
   project_id: number;
   assigned_user_id: number | null;
   due_date: Date | null;

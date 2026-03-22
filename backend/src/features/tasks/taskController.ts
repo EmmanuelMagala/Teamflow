@@ -5,6 +5,7 @@ import {
   createTaskForOwner,
   deleteTaskByIdAndOwnerId,
   getTasksByProjectIdAndOwnerId,
+  reorderTasksForOwner,
   updateTaskByIdAndOwnerId,
 } from "./taskQueries.js";
 
@@ -158,6 +159,49 @@ export const deleteTaskHandler = async (
     }
 
     res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const reorderTasksHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const user = await getCurrentAppUser(req);
+
+    if (!user) {
+      res
+        .status(404)
+        .json({ error: "User not found. Call POST /api/users/sync first." });
+      return;
+    }
+
+    const result = await reorderTasksForOwner(
+      {
+        projectId: Number(req.body.project_id),
+        columns: {
+          todo: req.body.columns.todo,
+          in_progress: req.body.columns.in_progress,
+          done: req.body.columns.done,
+        },
+      },
+      user.id,
+    );
+
+    if (result.kind === "project_not_found") {
+      res.status(404).json({ error: "Project not found" });
+      return;
+    }
+
+    if (result.kind === "invalid_order") {
+      res.status(400).json({ error: "Task order payload is invalid" });
+      return;
+    }
+
+    res.status(200).json(result.tasks);
   } catch (err) {
     next(err);
   }

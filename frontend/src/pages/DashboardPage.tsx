@@ -27,7 +27,7 @@ export function DashboardPage() {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+      <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
         <section className="mb-8 rounded-[2rem] border border-white/60 bg-white/80 p-6 shadow-sm backdrop-blur sm:p-8">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl space-y-3">
@@ -43,7 +43,7 @@ export function DashboardPage() {
               </p>
             </div>
             <Button
-              className="self-start lg:self-auto"
+              className="w-full sm:w-auto sm:self-start lg:self-auto"
               onClick={openCreateWorkspace}
               size="lg"
             >
@@ -81,7 +81,10 @@ export function DashboardPage() {
             title="No workspaces yet"
             description="Create your first workspace to start structuring projects and tasks."
             action={
-              <Button onClick={openCreateWorkspace}>
+              <Button
+                className="w-full sm:w-auto"
+                onClick={openCreateWorkspace}
+              >
                 <Plus className="h-4 w-4" />
                 Create first workspace
               </Button>
@@ -95,7 +98,7 @@ export function DashboardPage() {
         )}
 
         <section className="mt-10 rounded-[1.5rem] border border-white/60 bg-white/75 p-6 shadow-sm backdrop-blur">
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
             <div>
               <h2 className="text-lg font-semibold text-slate-950">
                 What’s next

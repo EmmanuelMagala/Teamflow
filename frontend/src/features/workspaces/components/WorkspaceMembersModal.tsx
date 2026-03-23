@@ -117,11 +117,20 @@ export function WorkspaceMembersModal({
                 </p>
               )}
             </div>
-            <div className="flex justify-end gap-3">
-              <Button onClick={onClose} type="button" variant="ghost">
+            <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+              <Button
+                className="w-full sm:w-auto"
+                onClick={onClose}
+                type="button"
+                variant="ghost"
+              >
                 Close
               </Button>
-              <Button disabled={isInviting} type="submit">
+              <Button
+                className="w-full sm:w-auto"
+                disabled={isInviting}
+                type="submit"
+              >
                 {isInviting ? "Inviting..." : "Invite member"}
               </Button>
             </div>
@@ -134,7 +143,7 @@ export function WorkspaceMembersModal({
         )}
 
         <div className="space-y-3">
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
             <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">
               Current members
             </h3>
@@ -168,13 +177,13 @@ export function WorkspaceMembersModal({
                 return (
                   <div
                     key={member.user_id}
-                    className="flex items-center justify-between gap-4 rounded-3xl border border-slate-200 bg-white/90 p-4 shadow-sm"
+                    className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white/90 p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between"
                   >
                     <div className="min-w-0 space-y-1">
                       <p className="truncate text-sm font-semibold text-slate-950">
                         {member.email}
                       </p>
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                         <span
                           className={cn(
                             "inline-flex rounded-full px-3 py-1 font-semibold uppercase tracking-[0.16em]",
@@ -191,6 +200,7 @@ export function WorkspaceMembersModal({
 
                     {canManageMembers && member.role !== "owner" ? (
                       <Button
+                        className="w-full sm:w-auto"
                         disabled={isRemoving}
                         onClick={() =>
                           handleRemoveMember(member.user_id, member.email)

@@ -104,7 +104,7 @@ export function WorkspacePage() {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         <section className="mb-8 rounded-[2rem] border border-white/60 bg-white/80 p-6 shadow-sm backdrop-blur sm:p-8">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="space-y-3">
@@ -127,8 +127,9 @@ export function WorkspacePage() {
                 {subtitle}
               </p>
             </div>
-            <div className="flex flex-wrap items-center gap-3 self-start lg:self-auto">
+            <div className="flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:self-start lg:w-auto lg:self-auto">
               <Button
+                className="w-full sm:w-auto"
                 onClick={() => setIsMembersModalOpen(true)}
                 type="button"
                 variant="secondary"
@@ -139,6 +140,7 @@ export function WorkspacePage() {
               {isOwner ? (
                 <>
                   <Button
+                    className="w-full sm:w-auto"
                     onClick={() => setIsEditWorkspaceOpen(true)}
                     type="button"
                     variant="secondary"
@@ -147,6 +149,7 @@ export function WorkspacePage() {
                     Edit workspace
                   </Button>
                   <Button
+                    className="w-full sm:w-auto"
                     disabled={!workspace || isDeletingWorkspace}
                     onClick={handleDeleteWorkspace}
                     type="button"
@@ -158,7 +161,7 @@ export function WorkspacePage() {
                 </>
               ) : null}
               <Button
-                className="self-start lg:self-auto"
+                className="w-full sm:w-auto sm:self-start lg:self-auto"
                 onClick={openCreateProject}
                 size="lg"
               >
@@ -194,7 +197,7 @@ export function WorkspacePage() {
         ) : projects.length === 0 ? (
           <EmptyState
             action={
-              <Button onClick={openCreateProject}>
+              <Button className="w-full sm:w-auto" onClick={openCreateProject}>
                 <Plus className="h-4 w-4" />
                 Create first project
               </Button>

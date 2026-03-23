@@ -124,11 +124,20 @@ export function CreateTaskModal({ projectId }: CreateTaskModalProps) {
             <p className="text-sm text-destructive">{errors.dueDate.message}</p>
           ) : null}
         </div>
-        <div className="flex justify-end gap-3">
-          <Button onClick={closeTaskModals} type="button" variant="ghost">
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+          <Button
+            className="w-full sm:w-auto"
+            onClick={closeTaskModals}
+            type="button"
+            variant="ghost"
+          >
             Cancel
           </Button>
-          <Button disabled={isPending} type="submit">
+          <Button
+            className="w-full sm:w-auto"
+            disabled={isPending}
+            type="submit"
+          >
             {isPending ? "Creating..." : "Create task"}
           </Button>
         </div>

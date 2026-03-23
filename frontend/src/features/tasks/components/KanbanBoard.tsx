@@ -256,7 +256,7 @@ export function KanbanBoard({ isLoading, projectId, tasks }: KanbanBoardProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-end justify-between gap-4">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-sky-600">
             Delivery board
@@ -288,7 +288,7 @@ export function KanbanBoard({ isLoading, projectId, tasks }: KanbanBoardProps) {
           onDragStart={handleDragStart}
           sensors={sensors}
         >
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-start">
+          <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:flex-col sm:snap-none sm:overflow-visible sm:px-0 lg:flex-row lg:items-start">
             {groupedTasks.map((column) => (
               <KanbanColumn
                 activeTaskId={activeTaskId}

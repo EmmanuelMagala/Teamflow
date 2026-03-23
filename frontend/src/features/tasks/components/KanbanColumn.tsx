@@ -29,7 +29,7 @@ export function KanbanColumn({
     <section
       ref={setNodeRef}
       className={cn(
-        "flex min-h-[420px] w-full flex-col rounded-[1.75rem] border border-slate-200/80 bg-white/90 p-4 shadow-panel backdrop-blur transition lg:w-[23rem]",
+        "flex min-h-[420px] w-[85vw] max-w-[24rem] shrink-0 snap-center flex-col rounded-[1.75rem] border border-slate-200/80 bg-white/90 p-4 shadow-panel backdrop-blur transition sm:w-full sm:max-w-none sm:shrink sm:snap-align-none lg:w-[23rem] lg:shrink-0",
         isOver &&
           "border-2 border-sky-400 bg-sky-50/95 shadow-[0_24px_70px_-38px_rgba(14,165,233,0.55)] scale-[1.01]",
       )}

@@ -8,14 +8,14 @@ export function Navbar() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link
           to="/"
-          className="flex items-center gap-3 font-semibold tracking-tight text-slate-900"
+          className="flex items-center gap-2 font-semibold tracking-tight text-slate-900 sm:gap-3"
         >
           <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-sm">
             <BriefcaseBusiness className="h-5 w-5" />
           </span>
-          <span className="text-lg">TeamFlow</span>
+          <span className="text-base sm:text-lg">TeamFlow</span>
         </Link>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <span className="hidden text-sm text-muted-foreground sm:inline">
             Organize work with clarity
           </span>

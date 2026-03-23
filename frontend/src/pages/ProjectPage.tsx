@@ -28,7 +28,7 @@ export function ProjectPage() {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         <section className="mb-8 rounded-[2rem] border border-slate-200/80 bg-white/88 p-6 shadow-panel backdrop-blur sm:p-8">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="space-y-3">
@@ -54,7 +54,7 @@ export function ProjectPage() {
               </p>
             </div>
             <Button
-              className="self-start lg:self-auto"
+              className="w-full sm:w-auto sm:self-start lg:self-auto"
               onClick={openCreateTask}
               size="lg"
             >

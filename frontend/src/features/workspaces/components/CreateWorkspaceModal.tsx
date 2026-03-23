@@ -59,11 +59,20 @@ export function CreateWorkspaceModal() {
             <p className="text-sm text-destructive">{errors.name.message}</p>
           ) : null}
         </div>
-        <div className="flex justify-end gap-3">
-          <Button onClick={closeCreateWorkspace} type="button" variant="ghost">
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+          <Button
+            className="w-full sm:w-auto"
+            onClick={closeCreateWorkspace}
+            type="button"
+            variant="ghost"
+          >
             Cancel
           </Button>
-          <Button disabled={isPending} type="submit">
+          <Button
+            className="w-full sm:w-auto"
+            disabled={isPending}
+            type="submit"
+          >
             {isPending ? "Creating..." : "Create workspace"}
           </Button>
         </div>

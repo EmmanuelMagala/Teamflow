@@ -20,7 +20,7 @@ export function EmptyState({ title, description, action }: EmptyStateProps) {
       </CardHeader>
       <CardContent className="space-y-4 text-center">
         <p className="text-sm text-muted-foreground">{description}</p>
-        {action ? <div>{action}</div> : null}
+        {action ? <div className="w-full sm:w-auto">{action}</div> : null}
       </CardContent>
     </Card>
   );

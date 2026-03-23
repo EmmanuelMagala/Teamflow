@@ -71,14 +71,14 @@ function TaskCardLayout({
         ) : null}
       </div>
 
-      <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
+      <div className="mt-4 flex flex-col gap-2 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
         <span className="inline-flex items-center gap-1.5">
           <Calendar className="h-3.5 w-3.5" />
           {task.due_date
             ? new Date(task.due_date).toLocaleDateString()
             : "No due date"}
         </span>
-        <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-400">
+        <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-400 sm:text-right">
           Drag card
         </span>
       </div>

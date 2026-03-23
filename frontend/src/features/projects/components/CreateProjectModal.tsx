@@ -104,11 +104,20 @@ export function CreateProjectModal({
             <p className="text-sm text-destructive">{errors.name.message}</p>
           ) : null}
         </div>
-        <div className="flex justify-end gap-3">
-          <Button onClick={close} type="button" variant="ghost">
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+          <Button
+            className="w-full sm:w-auto"
+            onClick={close}
+            type="button"
+            variant="ghost"
+          >
             Cancel
           </Button>
-          <Button disabled={isCreating || isUpdating} type="submit">
+          <Button
+            className="w-full sm:w-auto"
+            disabled={isCreating || isUpdating}
+            type="submit"
+          >
             {isCreating || isUpdating
               ? isEditing
                 ? "Saving..."

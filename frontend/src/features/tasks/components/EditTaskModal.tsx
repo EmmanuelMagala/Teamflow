@@ -180,7 +180,7 @@ export function EditTaskModal({ projectId, task }: EditTaskModalProps) {
             Status
           </label>
           <select
-            className="flex h-11 w-full rounded-2xl border border-input bg-background px-4 py-2 text-sm ring-offset-background transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className="flex h-11 w-full rounded-2xl border border-input bg-background px-4 py-2 text-base ring-offset-background transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:text-sm"
             id="edit-task-status"
             {...register("status")}
           >
@@ -210,8 +210,9 @@ export function EditTaskModal({ projectId, task }: EditTaskModalProps) {
           ) : null}
         </div>
 
-        <div className="flex items-center justify-between gap-3 pt-2">
+        <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between">
           <Button
+            className="w-full sm:w-auto"
             disabled={isDeleting}
             onClick={handleDelete}
             type="button"
@@ -219,11 +220,20 @@ export function EditTaskModal({ projectId, task }: EditTaskModalProps) {
           >
             {isDeleting ? "Deleting..." : "Delete task"}
           </Button>
-          <div className="flex gap-3">
-            <Button onClick={closeTaskModals} type="button" variant="ghost">
+          <div className="flex flex-col-reverse gap-3 sm:flex-row">
+            <Button
+              className="w-full sm:w-auto"
+              onClick={closeTaskModals}
+              type="button"
+              variant="ghost"
+            >
               Cancel
             </Button>
-            <Button disabled={isUpdating} type="submit">
+            <Button
+              className="w-full sm:w-auto"
+              disabled={isUpdating}
+              type="submit"
+            >
               {isUpdating ? "Saving..." : "Save changes"}
             </Button>
           </div>

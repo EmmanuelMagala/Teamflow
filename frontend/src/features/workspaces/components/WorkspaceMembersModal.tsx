@@ -10,6 +10,7 @@ import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Input } from "@/shared/components/ui/input";
 import { cn } from "@/shared/lib/utils";
 import { useInviteWorkspaceMember } from "../hooks/useInviteWorkspaceMember";
+import { useRealtimeWorkspaceMembers } from "../hooks/useRealtimeWorkspaceMembers";
 import { useRemoveWorkspaceMember } from "../hooks/useRemoveWorkspaceMember";
 import { useWorkspaceMembers } from "../hooks/useWorkspaceMembers";
 
@@ -35,6 +36,8 @@ export function WorkspaceMembersModal({
     workspace.id,
     isOpen,
   );
+  useRealtimeWorkspaceMembers(workspace.id, isOpen);
+
   const { mutate: inviteMember, isPending: isInviting } =
     useInviteWorkspaceMember();
   const { mutate: removeMember, isPending: isRemoving } =

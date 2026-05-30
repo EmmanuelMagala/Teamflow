@@ -28,6 +28,8 @@ type ReorderTasksResult =
   | { kind: "project_not_found" }
   | { kind: "invalid_order" };
 
+type DeletedTask = Pick<Task, "id" | "project_id">;
+
 const taskOrderByClause = `
   CASE t.status
     WHEN 'todo' THEN 1
@@ -313,8 +315,8 @@ export const reorderTasksForOwner = async (
 export const deleteTaskByIdAndOwnerId = async (
   taskId: number,
   userId: number,
-): Promise<boolean> => {
-  const result = await pool.query(
+): Promise<DeletedTask | null> => {
+  const result = await pool.query<DeletedTask>(
     `DELETE FROM tasks
 		 WHERE id = $1
 			 AND project_id IN (
@@ -323,9 +325,10 @@ export const deleteTaskByIdAndOwnerId = async (
 				 JOIN workspaces w ON w.id = p.workspace_id
          JOIN workspace_members wm ON wm.workspace_id = w.id
          WHERE wm.user_id = $2
-			 )`,
+			 )
+     RETURNING id, project_id`,
     [taskId, userId],
   );
 
-  return (result.rowCount ?? 0) > 0;
+  return result.rows[0] || null;
 };

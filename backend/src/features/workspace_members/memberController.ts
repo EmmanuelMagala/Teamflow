@@ -1,4 +1,6 @@
 import { NextFunction, Request, Response } from "express";
+import { SOCKET_EVENTS } from "../../socket/events.js";
+import { getIO, getWorkspaceRoom } from "../../socket/index.js";
 import { getCurrentAppUser } from "../users/currentUser.js";
 import { getUserByEmail } from "../users/userQueries.js";
 import {
@@ -82,10 +84,15 @@ export const inviteWorkspaceMemberHandler = async (
       return;
     }
 
-    res.status(201).json({
+    const member = {
       ...result.member,
       email: invitedUser.email,
-    });
+    };
+
+    res.status(201).json(member);
+    getIO()
+      .to(getWorkspaceRoom(member.workspace_id))
+      .emit(SOCKET_EVENTS.MEMBER_INVITED, member);
   } catch (err) {
     next(err);
   }
@@ -131,6 +138,12 @@ export const removeWorkspaceMemberHandler = async (
     }
 
     res.status(204).send();
+    getIO()
+      .to(getWorkspaceRoom(Number(req.params.workspaceId)))
+      .emit(SOCKET_EVENTS.MEMBER_REMOVED, {
+        user_id: Number(req.params.userId),
+        workspace_id: Number(req.params.workspaceId),
+      });
   } catch (err) {
     next(err);
   }

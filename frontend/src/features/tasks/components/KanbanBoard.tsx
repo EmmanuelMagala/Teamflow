@@ -12,6 +12,7 @@ import {
 import { arrayMove } from "@dnd-kit/sortable";
 import { useMemo, useState } from "react";
 import { useReorderTasks } from "../hooks/useReorderTasks";
+import { useRealtimeTasks } from "../hooks/useRealtimeTasks";
 import type { Task, TaskIdColumns, TaskStatus } from "../types";
 import { KanbanColumn } from "./KanbanColumn";
 import { TaskCardPreview } from "./TaskCard";
@@ -148,6 +149,8 @@ function moveTaskBetweenColumns(
 
 export function KanbanBoard({ isLoading, projectId, tasks }: KanbanBoardProps) {
   const { mutate: reorderTasks } = useReorderTasks(projectId);
+  useRealtimeTasks(projectId);
+
   const [draftTasks, setDraftTasks] = useState<Task[]>([]);
   const [activeTaskId, setActiveTaskId] = useState<number | null>(null);
   const [isDropPending, setIsDropPending] = useState(false);

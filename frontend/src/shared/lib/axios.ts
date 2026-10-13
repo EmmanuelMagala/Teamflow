@@ -1,13 +1,6 @@
 // src/shared/lib/axios.ts
 import axios from "axios";
-
-type ClerkWindow = Window & {
-  Clerk?: {
-    session?: {
-      getToken: () => Promise<string | null>;
-    };
-  };
-};
+import { getClerkToken } from "@/shared/lib/clerkAuth";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -16,7 +9,7 @@ const api = axios.create({
 
 // Attach Clerk JWT to every request automatically
 api.interceptors.request.use(async (config) => {
-  const token = await (window as ClerkWindow).Clerk?.session?.getToken();
+  const token = await getClerkToken();
   if (token) {
     config.headers.set("Authorization", `Bearer ${token}`);
   }

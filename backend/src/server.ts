@@ -1,4 +1,5 @@
 // src/server.ts
+import { createServer, type Server as HttpServer } from "node:http";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -14,6 +15,7 @@ import workspaceMemberRoutes from "./features/workspace_members/memberRoutes.js"
 import workspaceRoutes from "./features/workspaces/workspaceRoutes.js";
 import projectRoutes from "./features/projects/projectRoutes.js";
 import taskRoutes from "./features/tasks/taskRoutes.js";
+import { initSocket } from "./socket/index.js";
 
 const PORT = env.PORT;
 const HOST = env.HOST;
@@ -118,12 +120,16 @@ export const createApp = () => {
 
 const app = createApp();
 
-let server: ReturnType<typeof app.listen> | null = null;
+let server: HttpServer | null = null;
 
 const startServer = async () => {
   try {
-    server = app.listen(PORT, HOST, () => {
+    server = createServer(app);
+    initSocket(server);
+
+    server.listen(PORT, HOST, () => {
       console.log(`🚀 Server running on http://${HOST}:${PORT}`);
+      console.log("Socket.io ready");
     });
   } catch (error) {
     console.error("Failed to start TeamFlow API", error);

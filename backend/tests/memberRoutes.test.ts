@@ -9,6 +9,9 @@ const loadApp = async () => {
   const getWorkspaceMembersForUser = vi.fn();
   const inviteWorkspaceMember = vi.fn();
   const removeWorkspaceMember = vi.fn();
+  const emit = vi.fn();
+  const to = vi.fn(() => ({ emit }));
+  const getIO = vi.fn(() => ({ to }));
 
   vi.doMock("../src/features/users/currentUser.js", () => ({
     getCurrentAppUser,
@@ -21,16 +24,25 @@ const loadApp = async () => {
     inviteWorkspaceMember,
     removeWorkspaceMember,
   }));
+  vi.doMock("../src/socket/index.js", () => ({
+    getIO,
+    getProjectRoom: (projectId: number) => `project:${projectId}`,
+    getWorkspaceRoom: (workspaceId: number) => `workspace:${workspaceId}`,
+    initSocket: vi.fn(),
+  }));
 
   const { default: app } = await import("../src/server.js");
 
   return {
     app,
+    emit,
     getCurrentAppUser,
+    getIO,
     getUserByEmail,
     getWorkspaceMembersForUser,
     inviteWorkspaceMember,
     removeWorkspaceMember,
+    to,
   };
 };
 
@@ -93,5 +105,63 @@ describe("workspace member routes", () => {
 
     expect(response.status).toBe(409);
     expect(response.body.code).toBe("ALREADY_MEMBER");
+  });
+
+  it("emits member:invited after a successful invite", async () => {
+    const {
+      app,
+      emit,
+      getCurrentAppUser,
+      getUserByEmail,
+      inviteWorkspaceMember,
+      to,
+    } = await loadApp();
+
+    getCurrentAppUser.mockResolvedValue({ id: 17 });
+    getUserByEmail.mockResolvedValue({ id: 23, email: "member@example.com" });
+    inviteWorkspaceMember.mockResolvedValue({
+      kind: "success",
+      member: {
+        created_at: new Date(),
+        email: "",
+        role: "member",
+        user_id: 23,
+        workspace_id: 5,
+      },
+    });
+
+    const response = await request(app)
+      .post("/api/workspaces/5/members/invite")
+      .set("x-test-user-id", "clerk_17")
+      .send({ email: "member@example.com" });
+
+    expect(response.status).toBe(201);
+    expect(to).toHaveBeenCalledWith("workspace:5");
+    expect(emit).toHaveBeenCalledWith("member:invited", {
+      created_at: expect.any(Date),
+      email: "member@example.com",
+      role: "member",
+      user_id: 23,
+      workspace_id: 5,
+    });
+  });
+
+  it("emits member:removed after a successful removal", async () => {
+    const { app, emit, getCurrentAppUser, removeWorkspaceMember, to } =
+      await loadApp();
+
+    getCurrentAppUser.mockResolvedValue({ id: 17 });
+    removeWorkspaceMember.mockResolvedValue({ kind: "success" });
+
+    const response = await request(app)
+      .delete("/api/workspaces/5/members/23")
+      .set("x-test-user-id", "clerk_17");
+
+    expect(response.status).toBe(204);
+    expect(to).toHaveBeenCalledWith("workspace:5");
+    expect(emit).toHaveBeenCalledWith("member:removed", {
+      user_id: 23,
+      workspace_id: 5,
+    });
   });
 });

@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { TaskStatus } from "../../types/index.js";
+import { SOCKET_EVENTS } from "../../socket/events.js";
+import { getIO, getProjectRoom } from "../../socket/index.js";
 import { getCurrentAppUser } from "../users/currentUser.js";
 import {
   createTaskForOwner,
@@ -81,6 +83,9 @@ export const createTaskHandler = async (
     }
 
     res.status(201).json(task);
+    getIO()
+      .to(getProjectRoom(task.project_id))
+      .emit(SOCKET_EVENTS.TASK_CREATED, task);
   } catch (err) {
     next(err);
   }
@@ -128,6 +133,9 @@ export const updateTaskHandler = async (
     }
 
     res.status(200).json(task);
+    getIO()
+      .to(getProjectRoom(task.project_id))
+      .emit(SOCKET_EVENTS.TASK_UPDATED, task);
   } catch (err) {
     next(err);
   }
@@ -148,17 +156,20 @@ export const deleteTaskHandler = async (
       return;
     }
 
-    const deleted = await deleteTaskByIdAndOwnerId(
+    const deletedTask = await deleteTaskByIdAndOwnerId(
       Number(req.params.id),
       user.id,
     );
 
-    if (!deleted) {
+    if (!deletedTask) {
       res.status(404).json({ error: "Task not found" });
       return;
     }
 
     res.status(204).send();
+    getIO()
+      .to(getProjectRoom(deletedTask.project_id))
+      .emit(SOCKET_EVENTS.TASK_DELETED, deletedTask);
   } catch (err) {
     next(err);
   }
@@ -202,6 +213,9 @@ export const reorderTasksHandler = async (
     }
 
     res.status(200).json(result.tasks);
+    getIO()
+      .to(getProjectRoom(Number(req.body.project_id)))
+      .emit(SOCKET_EVENTS.TASK_REORDERED, result.tasks);
   } catch (err) {
     next(err);
   }
